@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 0b08649a7217dfd4cb5478d70ebea430
-  - enabled: 1
-    path: Assets/Scenes/ScanningScene.unity
-    guid: 1a6770abd922a9442ba057171945a092
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 744b813df90924c169af73489b8325de,
       type: 2}

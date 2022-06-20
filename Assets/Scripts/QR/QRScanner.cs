@@ -15,6 +15,7 @@ public class QRScanner : MonoBehaviour
         StartCoroutine(TakeScreenshot((texture) => 
         {
             TryDecode(texture, out _decodedText);
+            DestroyImmediate(texture);
         }));
 
         return _decodedText;
