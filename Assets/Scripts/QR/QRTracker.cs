@@ -20,15 +20,15 @@ public class QRTracker : MonoBehaviour
         while (true)
         {
             string text = _QRScanner.DecodeScreenshot();
-            _text.text = text;
 
             if (string.IsNullOrEmpty(text) == false)
             {
+                _text.text = text;
                 UpdatePanel(text);
             }
             else
             {
-                Destroy(_panel.gameObject);
+                DestroyPanel();
             }
 
             yield return new WaitForSeconds(1);
@@ -40,8 +40,17 @@ public class QRTracker : MonoBehaviour
         if (_panel == null)
         {
             _panel = _panelCreator.TryCreatePanel();
+            return;
         }
 
         _panel.SetText(text);
+    }
+
+    private void DestroyPanel()
+    {
+        if (_panel != null)
+        {
+            Destroy(_panel.gameObject);
+        }
     }
 }

@@ -8,6 +8,7 @@ public class PanelCreator : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private ARRaycastManager _raycastManager;
     [SerializeField] private UIPanel _panelPrefab;
+    [SerializeField] private Transform _container;
 
     public UIPanel TryCreatePanel()
     {
@@ -17,7 +18,7 @@ public class PanelCreator : MonoBehaviour
         if (raycast != null)
         {
             Vector3 position = raycast.transform.position;
-            UIPanel panel = Instantiate(_panelPrefab, position, Quaternion.identity);
+            UIPanel panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
 
             if (panel.TryGetComponent(out LookAtTarget lookAtTarget))
             {
