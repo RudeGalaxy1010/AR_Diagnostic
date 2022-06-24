@@ -1,33 +1,24 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 using ZXing;
 
 public class QRScanner : MonoBehaviour
 {
-    [SerializeField] private ContentView _contentView;
+    [SerializeField] private ARCameraBackground _cameraBackground;
+    [SerializeField] private RenderTexture _renderTexture;
 
     private IBarcodeReader _codeReader = new BarcodeReader();
     private string _decodedText = "";
 
     public string DecodeScreenshot()
     {
-        StartCoroutine(TakeScreenshot((texture) => 
-        {
-            TryDecode(texture, out _decodedText);
-            DestroyImmediate(texture);
-        }));
+        Graphics.Blit(null, _renderTexture, _cameraBackground.material);
+        Texture2D texture = _renderTexture.ToTexture2D();
+        TryDecode(texture, out _decodedText);
+        DestroyImmediate(texture);
 
         return _decodedText;
-    }
-
-    private IEnumerator TakeScreenshot(Action<Texture2D> callback)
-    {
-        _contentView.HideAll();
-        yield return new WaitForEndOfFrame();
-        callback(ScreenCapture.CaptureScreenshotAsTexture());
-        yield return new WaitForEndOfFrame();
-        _contentView.ShowAll();
     }
 
     private bool TryDecode(Texture2D texture, out string result)

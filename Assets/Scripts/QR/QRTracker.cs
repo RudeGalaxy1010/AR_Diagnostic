@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class QRTracker : MonoBehaviour
 {
+    private const float ScanningSessionsDelay = 0.5f;
+
     [SerializeField] private TMP_Text _text;
     [SerializeField] private QRScanner _QRScanner;
     [SerializeField] private PanelCreator _panelCreator;
@@ -28,10 +30,10 @@ public class QRTracker : MonoBehaviour
             }
             else
             {
-                DestroyPanel();
+                //DestroyPanel();
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(ScanningSessionsDelay);
         }
     }
 
