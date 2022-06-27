@@ -31,7 +31,7 @@ public class QRScanner : MonoBehaviour
         }
         catch (Exception exception)
         {
-            Debug.LogWarning(exception);
+            
         }
 
         result = "";

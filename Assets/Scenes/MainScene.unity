@@ -217,50 +217,6 @@ Transform:
   m_Father: {fileID: 1838308514}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &169276074
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 169276075}
-  - component: {fileID: 169276076}
-  m_Layer: 0
-  m_Name: Gesture Tracking
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &169276075
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 169276074}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &169276076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 169276074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7402d1ed5b5711e4faefa574c7b6f6dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &179608167
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 179608168}
   - component: {fileID: 179608169}
+  - component: {fileID: 179608170}
   m_Layer: 0
   m_Name: PanelCreator
   m_TagString: Untagged
@@ -307,9 +264,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 1336720985}
   _raycastManager: {fileID: 1625695591}
-  _panelPrefab: {fileID: 8035961135929610589, guid: 2f2c36e0ecff84c4b8c8e08aba2c2b1b,
+--- !u!114 &179608170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179608167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978cdde1a40f1934db94e047b3c69019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 1554363760}
+  _QRScanner: {fileID: 325501896}
+  _container: {fileID: 179608168}
+  _panelPrefab: {fileID: 3539580454230981989, guid: 2f2c36e0ecff84c4b8c8e08aba2c2b1b,
     type: 3}
-  _container: {fileID: 0}
 --- !u!1 &306235751
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,9 +378,8 @@ GameObject:
   m_Component:
   - component: {fileID: 325501895}
   - component: {fileID: 325501896}
-  - component: {fileID: 325501897}
   m_Layer: 0
-  m_Name: QRs
+  m_Name: QR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -444,21 +414,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraBackground: {fileID: 1336720986}
   _renderTexture: {fileID: 8400000, guid: ee9185e55b1136e4b953bf8493ad8c4b, type: 2}
---- !u!114 &325501897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325501894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 978cdde1a40f1934db94e047b3c69019, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _text: {fileID: 1554363760}
-  _QRScanner: {fileID: 325501896}
-  _panelCreator: {fileID: 179608169}
 --- !u!1001 &404285547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -469,6 +424,10 @@ PrefabInstance:
     - target: {fileID: 1291009250987664, guid: 0f8504ddba966c5459c5954aff90da2d, type: 3}
       propertyPath: m_Name
       value: ManomotionCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468700632859152, guid: 0f8504ddba966c5459c5954aff90da2d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224299564001968978, guid: 0f8504ddba966c5459c5954aff90da2d,
         type: 3}
