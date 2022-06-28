@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Helpping class for looking at target
 public class LookAtTarget : MonoBehaviour
 {
     [SerializeField] private Transform _target;
@@ -8,7 +9,8 @@ public class LookAtTarget : MonoBehaviour
     {
         _target = target;
     }
-
+    
+    // Update rotation with look at target each frame
     private void Update()
     {
         if (_target == null)

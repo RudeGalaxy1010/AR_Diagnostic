@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Class for switching pages
 [RequireComponent(typeof(GestureInput), typeof(LookAtTarget))]
 public class Panel : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class Panel : MonoBehaviour
         SetPage(StartPageIndex);
     }
 
+    // Subscribe
     private void OnEnable()
     {
         _gestureInput.RightSwipeReceived += PreviousPage;
@@ -38,6 +40,7 @@ public class Panel : MonoBehaviour
         _previousPageButton.onClick.AddListener(PreviousPage);
     }
 
+    // Unsubscribe
     private void OnDisable()
     {
         _gestureInput.RightSwipeReceived -= PreviousPage;
@@ -47,6 +50,7 @@ public class Panel : MonoBehaviour
         _previousPageButton.onClick.RemoveListener(PreviousPage);
     }
 
+    // Switch to next page
     private void NextPage()
     {
         _currentPageIndex++;
@@ -59,6 +63,7 @@ public class Panel : MonoBehaviour
         SetPage(_currentPageIndex);
     }
 
+    // Switch to previous page
     private void PreviousPage()
     {
         _currentPageIndex--;

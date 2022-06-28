@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using ZXing;
 
+// Class for decoding QRs
 public class QRScanner : MonoBehaviour
 {
     [SerializeField] private ARCameraBackground _cameraBackground;
@@ -11,6 +12,7 @@ public class QRScanner : MonoBehaviour
     private IBarcodeReader _codeReader = new BarcodeReader();
     private string _decodedText = "";
 
+    // Copying camera view to a Texture2D and return decoded string
     public string DecodeScreenshot()
     {
         Graphics.Blit(null, _renderTexture, _cameraBackground.material);
@@ -21,6 +23,7 @@ public class QRScanner : MonoBehaviour
         return _decodedText;
     }
 
+    // Method for decoding texture into string, return true if string is not empty
     private bool TryDecode(Texture2D texture, out string result)
     {
         try

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public static class TextureExtentions
 {
+    // Helping extention method for turning RenderTexture into Texture2D
     public static Texture2D ToTexture2D(this RenderTexture renderTexture)
     {
         Texture2D texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);

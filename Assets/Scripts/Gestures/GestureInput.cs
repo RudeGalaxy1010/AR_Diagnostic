@@ -1,16 +1,19 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+// Class for detecting gesture input
 public class GestureInput : MonoBehaviour
 {
     public event UnityAction RightSwipeReceived;
     public event UnityAction LeftSwipeReceived;
 
+    // Check if swipe received each frame
     private void Update()
     {
         ReceiveSwipes();
     }
 
+    // Method detects swipe gestures and call action
     private void ReceiveSwipes()
     {
         HandInfo handInfo = ManomotionManager.Instance.Hand_infos[0].hand_info;

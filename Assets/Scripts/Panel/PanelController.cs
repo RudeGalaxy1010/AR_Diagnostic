@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
+// Class for updating panel with actual info decoded from QR
 [RequireComponent(typeof(RaycastManager))]
 public class PanelController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PanelController : MonoBehaviour
         StartCoroutine(Scan());
     }
 
+    // Try decode camera view
     private IEnumerator Scan()
     {
         while (true)
