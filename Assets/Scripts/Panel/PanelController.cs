@@ -49,5 +49,6 @@ public class PanelController : MonoBehaviour
         }
 
         // Set data to panel
+        // cDataHolder.CreateFromString(text);
     }
 }
