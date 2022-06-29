@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 // Class for updating panel with actual info decoded from QR
@@ -8,7 +8,6 @@ public class PanelController : MonoBehaviour
 {
     private const float ScanningSessionsDelay = 0.5f;
 
-    [SerializeField] private TMP_Text _text;
     [SerializeField] private QRScanner _QRScanner;
     [SerializeField] private Transform _container;
     [SerializeField] private Panel _panelPrefab;
@@ -19,6 +18,7 @@ public class PanelController : MonoBehaviour
     private void Start()
     {
         _raycastManager = GetComponent<RaycastManager>();
+        _panel = null;
         StartCoroutine(Scan());
     }
 
@@ -28,27 +28,33 @@ public class PanelController : MonoBehaviour
         while (true)
         {
             string text = _QRScanner.DecodeScreenshot();
+            UpdatePanelPosition();
 
-            _text.text = text;             // TODO: remove
-            UpdatePanel(text);
+            try
+            {
+                _panel.SetInfo(cDataHolder.CreateFromString(text));
+            }
+            catch (Exception e)
+            {
+
+            }
 
             yield return new WaitForSeconds(ScanningSessionsDelay);
         }
     }
 
-    private void UpdatePanel(string text)
+    // Update panel position or creates panel if null
+    private void UpdatePanelPosition()
     {
+        Vector3 position = _raycastManager.TryGetRaycastPosition();
+
         if (_panel == null)
         {
-            Vector3 position = _raycastManager.TryGetRaycastPosition();
-
-            if (position != default)
-            {
-                _panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
-            }
+            _panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
         }
-
-        // Set data to panel
-        // cDataHolder.CreateFromString(text);
+        else
+        {
+            _panel.transform.position = position;
+        }
     }
 }

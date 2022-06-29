@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,12 +7,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(GestureInput), typeof(LookAtTarget))]
 public class Panel : MonoBehaviour
 {
+    private const int TextPagesCount = 5;
+    private const int ImagePagesCount = 1;
     private const int StartPageIndex = 0;
 
-    [SerializeField] private TMP_Text _testText;
-
     [SerializeField] private float _pagesSwipeSpeed = 2000f;
-    [SerializeField] private Page[] _pages;
+    [SerializeField] private Page _textPagePrefab;
+    [SerializeField] private Page _imagePagePrefab;
     [SerializeField] private RectTransform _pagesContainer;
     [SerializeField] private Button _nextPageButton;
     [SerializeField] private Button _previousPageButton;
@@ -20,6 +21,7 @@ public class Panel : MonoBehaviour
     private GestureInput _gestureInput;
     private LookAtTarget _lookAtTarget;
 
+    private Page[] _pages;
     private Page _currentPage;
     private int _currentPageIndex;
 
@@ -32,6 +34,9 @@ public class Panel : MonoBehaviour
         _gestureInput = GetComponent<GestureInput>();
         _lookAtTarget = GetComponent<LookAtTarget>();
         _lookAtTarget.SetTarget(Camera.main.transform);
+
+        CreatePages(TextPagesCount, ImagePagesCount);
+
         _pageWidth = _pages[0].GetComponent<RectTransform>().rect.width;
         _pagesContainerOffset = _pagesContainer.anchoredPosition;
 
@@ -71,9 +76,63 @@ public class Panel : MonoBehaviour
         _previousPageButton.onClick.RemoveListener(PreviousPage);
     }
 
+    public void SetInfo(cDataHolder data)
+    {
+        if (data == null)
+        {
+            ((TextPage)_pages[0]).SetText("Updating...");
+            ((TextPage)_pages[1]).SetText("Updating...");
+            ((TextPage)_pages[2]).SetText("Updating...");
+            ((TextPage)_pages[3]).SetText("Updating...");
+            ((TextPage)_pages[4]).SetText("Updating...");
+
+            return;
+        }
+
+        string cpuInfo = "CPU" + Environment.NewLine + data.dCPUName + Environment.NewLine + data.dCPUManufacturer + Environment.NewLine +
+            data.dCPUWidth + Environment.NewLine + data.dCPUNumberOfCores + Environment.NewLine +
+            data.dCPUNumberOfThreads + Environment.NewLine + data.dCPUCurrentClockSpeed;
+
+        string videoAdapterInfo = "Video" + Environment.NewLine + data.dGPUName + Environment.NewLine + data.dGPUVideoProcessor + Environment.NewLine +
+            data.dGPUStatus + Environment.NewLine + data.dGPURAM + Environment.NewLine + data.dGPUDriverVersion;
+
+        string RAMInfo = "RAM" + Environment.NewLine + data.dRAMSize + Environment.NewLine + data.dRAMFree;
+
+        string windowsInfo = "Windows" + Environment.NewLine + data.dSystemName + Environment.NewLine + data.dSystemVersion + Environment.NewLine +
+            data.dSystemSerialNumber + Environment.NewLine + data.dSystemDirectory;
+
+        string diskInfo = "Drive" + Environment.NewLine + data.dDiskParams;
+
+        ((TextPage)_pages[0]).SetText(cpuInfo);
+        ((TextPage)_pages[1]).SetText(videoAdapterInfo);
+        ((TextPage)_pages[2]).SetText(RAMInfo);
+        ((TextPage)_pages[3]).SetText(windowsInfo);
+        ((TextPage)_pages[4]).SetText(diskInfo);
+    }
+
+    private void CreatePages(int textPagesCount, int imagePagesCount)
+    {
+        _pages = new Page[textPagesCount + imagePagesCount];
+
+        for (int i = 0; i < textPagesCount; i++)
+        {
+            _pages[i] = Instantiate(_textPagePrefab, _pagesContainer);
+        }
+
+        for (int i = textPagesCount; i < textPagesCount + imagePagesCount; i++)
+        {
+            _pages[i] = Instantiate(_imagePagePrefab, _pagesContainer);
+        }
+    }
+
     // Switch to next page
     private void NextPage()
     {
+        if (_swipePageCoroutine != null)
+        {
+            return;
+        }
+
         _currentPageIndex++;
 
         if (_currentPageIndex >= _pages.Length)
@@ -89,6 +148,11 @@ public class Panel : MonoBehaviour
     // Switch to previous page
     private void PreviousPage()
     {
+        if (_swipePageCoroutine != null)
+        {
+            return;
+        }
+
         _currentPageIndex--;
 
         if (_currentPageIndex < 0)
