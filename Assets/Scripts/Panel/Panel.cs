@@ -36,11 +36,10 @@ public class Panel : MonoBehaviour
 
         CreatePages(TextPagesCount, ImagePagesCount);
 
-        _pageWidth = _pages[0].GetComponent<RectTransform>().rect.width;
+        _pageWidth = _pages[StartPageIndex].GetComponent<RectTransform>().rect.width;
         _pagesContainerOffset = _pagesContainer.anchoredPosition;
 
         _currentPageIndex = StartPageIndex;
-        SetPage(StartPageIndex);
     }
 
     // Subscribe
@@ -142,11 +141,11 @@ public class Panel : MonoBehaviour
         if (_currentPageIndex >= _pages.Length)
         {
             _currentPageIndex = 0;
-            SetPage(_currentPageIndex, false);
+            _swipePageCoroutine = StartCoroutine(SwipePage(SwipeType.Hard));
             return;
         }
 
-        SetPage(_currentPageIndex);
+        _swipePageCoroutine = StartCoroutine(SwipePage());
     }
 
     // Switch to previous page
@@ -162,30 +161,20 @@ public class Panel : MonoBehaviour
         if (_currentPageIndex < 0)
         {
             _currentPageIndex = _pages.Length - 1;
-            SetPage(_currentPageIndex, false);
+            _swipePageCoroutine = StartCoroutine(SwipePage(SwipeType.Hard));
             return;
         }
 
-        SetPage(_currentPageIndex);
-    }
-
-    private void SetPage(int index, bool isSmoothSwipe = true)
-    {
-        if (_swipePageCoroutine != null)
-        {
-            return;
-        }
-
-        _swipePageCoroutine = StartCoroutine(SwipePage(isSmoothSwipe));
+        _swipePageCoroutine = StartCoroutine(SwipePage());
     }
 
     // Coroutine for smooth swiping (or hard swiping !only for the first page and the last page due to the gap)
-    private IEnumerator SwipePage(bool isSmoothSwipe)
+    private IEnumerator SwipePage(SwipeType swipeType = SwipeType.Smooth)
     {
         float xContainerPosition = -(_currentPageIndex * _pageWidth);
         Vector2 newContainerPosition = new Vector2(xContainerPosition, 0) + _pagesContainerOffset;
 
-        if (isSmoothSwipe == false)
+        if (swipeType == SwipeType.Hard)
         {
             _pagesContainer.anchoredPosition = newContainerPosition;
         }
