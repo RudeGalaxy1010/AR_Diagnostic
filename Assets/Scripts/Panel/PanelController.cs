@@ -57,7 +57,16 @@ public class PanelController : MonoBehaviour
 
     private void CreatePanel()
     {
-        Vector3 position = _raycastManager.TryGetRaycastPosition();
-        _panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
+        int attemptsCount = 25;
+
+        for (int i = 0; i < attemptsCount; i++)
+        {
+            Vector3 position = _raycastManager.TryGetRaycastPosition();
+            if (position != default)
+            {
+                _panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
+                return;
+            }
+        }
     }
 }
