@@ -22,7 +22,6 @@ public class Panel : MonoBehaviour
     private LookAtTarget _lookAtTarget;
 
     private Page[] _pages;
-    private Page _currentPage;
     private int _currentPageIndex;
 
     private float _pageWidth;
@@ -80,11 +79,7 @@ public class Panel : MonoBehaviour
     {
         if (data == null)
         {
-            ((TextPage)_pages[0]).SetText("Updating...");
-            ((TextPage)_pages[1]).SetText("Updating...");
-            ((TextPage)_pages[2]).SetText("Updating...");
-            ((TextPage)_pages[3]).SetText("Updating...");
-            ((TextPage)_pages[4]).SetText("Updating...");
+            Reset();
 
             return;
         }
@@ -108,6 +103,15 @@ public class Panel : MonoBehaviour
         ((TextPage)_pages[2]).SetText(RAMInfo);
         ((TextPage)_pages[3]).SetText(windowsInfo);
         ((TextPage)_pages[4]).SetText(diskInfo);
+    }
+
+    public void Reset()
+    {
+        ((TextPage)_pages[0]).SetText("Updating...");
+        ((TextPage)_pages[1]).SetText("Updating...");
+        ((TextPage)_pages[2]).SetText("Updating...");
+        ((TextPage)_pages[3]).SetText("Updating...");
+        ((TextPage)_pages[4]).SetText("Updating...");
     }
 
     private void CreatePages(int textPagesCount, int imagePagesCount)
@@ -172,7 +176,6 @@ public class Panel : MonoBehaviour
             return;
         }
 
-        _currentPage = _pages[index];
         _swipePageCoroutine = StartCoroutine(SwipePage(isSmoothSwipe));
     }
 

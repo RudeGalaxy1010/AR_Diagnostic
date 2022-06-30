@@ -1,13 +1,9 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 // Class for updating panel with actual info decoded from QR
 [RequireComponent(typeof(RaycastManager))]
 public class PanelController : MonoBehaviour
 {
-    private const float ScanningSessionsDelay = 0.5f;
-
     [SerializeField] private QRScanner _QRScanner;
     [SerializeField] private Transform _container;
     [SerializeField] private Panel _panelPrefab;
@@ -15,46 +11,53 @@ public class PanelController : MonoBehaviour
     private RaycastManager _raycastManager;
     private Panel _panel;
 
+    // Subscribe
+    private void OnEnable()
+    {
+        _QRScanner.QRDecoded += OnQRDecoded;
+    }
+
+    // Unsubscribe
+    private void OnDisable()
+    {
+        _QRScanner.QRDecoded -= OnQRDecoded;
+    }
+
     private void Start()
     {
         _raycastManager = GetComponent<RaycastManager>();
         _panel = null;
-        StartCoroutine(Scan());
     }
 
-    // Try decode camera view
-    private IEnumerator Scan()
+    private void OnQRDecoded(string text)
     {
-        while (true)
+        if (_panel == null)
         {
-            string text = _QRScanner.DecodeScreenshot();
-            UpdatePanelPosition();
+            CreatePanel();
+        }
 
-            try
-            {
-                _panel.SetInfo(cDataHolder.CreateFromString(text));
-            }
-            catch (Exception e)
-            {
+        UpdatePanelPosition();
 
-            }
-
-            yield return new WaitForSeconds(ScanningSessionsDelay);
+        try
+        {
+            _panel.SetInfo(cDataHolder.CreateFromString(text));
+        }
+        catch
+        {
+            _panel.Reset();
         }
     }
 
-    // Update panel position or creates panel if null
+    // Update panel position
     private void UpdatePanelPosition()
     {
         Vector3 position = _raycastManager.TryGetRaycastPosition();
+        _panel.transform.position = position;
+    }
 
-        if (_panel == null)
-        {
-            _panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
-        }
-        else
-        {
-            _panel.transform.position = position;
-        }
+    private void CreatePanel()
+    {
+        Vector3 position = _raycastManager.TryGetRaycastPosition();
+        _panel = Instantiate(_panelPrefab, position, Quaternion.identity, _container);
     }
 }
